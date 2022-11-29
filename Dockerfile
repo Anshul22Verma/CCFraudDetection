@@ -1,5 +1,5 @@
 # selecting a base docker container with cuda and cudnn installed that maches the VM used to build the docker
-FROM buildpack-deps:buster
+FROM python:3.10
 
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
@@ -9,11 +9,8 @@ ENV PATH /usr/local/bin:$PATH
 # not sure if the base docker is regularly updated so adding the essential 
 RUN apt-get update && apt-get install -y \
     build-essential \
-    git \
     curl \
     unzip \
-    python3 \
-    python3-pip \
  && rm -rf /var/lib/apt/lists/*
 
 # I prefer having the model and code downloaded in the docker if the model and the code version is not changing
