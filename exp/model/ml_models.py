@@ -1,15 +1,23 @@
-import numpy as np
+import os
+import os.path as osp
 import pandas as pd
+import pickle
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler
-
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier, ExtraTreesClassifier
+from sklearn.linear_model import LogisticRegression, SGDClassifier, RidgeClassifier
 from sklearn.metrics import roc_curve, roc_auc_score, accuracy_score
 from sklearn.model_selection import GridSearchCV
-from sklearn.linear_model import LogisticRegression, SGDClassifier, RidgeClassifier
+from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier, ExtraTreesClassifier
-from sklearn.svm import SVC
+import sys
 
+sys.path.append(osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__)))))
+
+from utils.loading_N_analysis import CCFraudData
+from utils.preprocess import CCFraudPreprocess
+
+# hiding all the warnings (mainly convergence and algorithm warnings)
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -148,7 +156,6 @@ class MLClassifierModel:
         cls = self.best_model.best_estimator_
         return roc_auc_score(y, cls.predict_proba(X)[:, 1])
 
-import pickle
 
 def save_model(obj: MLClassifierModel, full_path: str) -> None:
     '''
@@ -170,14 +177,12 @@ def load_model(full_path: str) -> MLClassifierModel:
     
 
 if __name__ == "__main__":
-    import sys
-    sys.path.append('/Users/anshulverma/Documents/CCFraudDetection')
-    
-    from utils.loading_N_analysis import CCFraudData
-    from utils.preprocess import CCFraudPreprocess
-
-    loc = '/Users/anshulverma/Documents/CCData/creditcard.csv'
-    ccData = CCFraudData(loc=loc, target_loc='/Users/anshulverma/Documents/CCData/analysis')
+    main_dir = osp.dirname(osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__)))))
+    os.makedirs(osp.join(main_dir, 'CCData'), exist_ok=True)
+    loc = osp.join(main_dir, 'CCData', 'creditcard.csv')
+    target_loc = osp.join(main_dir, 'CCData', 'analysis')
+    os.makedirs(target_loc, exist_ok=True)
+    ccData = CCFraudData(loc=loc, target_loc=target_loc)
     ccPreprocess = CCFraudPreprocess(ccData=ccData)
 
     train_df, test_df = ccPreprocess.split_dataframe()

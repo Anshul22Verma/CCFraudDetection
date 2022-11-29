@@ -5,11 +5,12 @@ import numpy as np
 import os
 import os.path as osp
 import pandas as pd
-from sklearn.model_selection import train_test_split
 import seaborn as sns 
+from sklearn.model_selection import train_test_split
 import sys
 
-sys.path.append('/Users/anshulverma/Documents/CCFraudDetection')
+sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
+
 from utils.loading_N_analysis import CCFraudData
 from utils.utilities import InternalException
 
@@ -59,10 +60,14 @@ class CCFraudPreprocess:
         return (X_df, y_col)
 
     
-if __name__ == "__main__":
-    from utils.loading_N_analysis import CCFraudData
-    loc = '/Users/anshulverma/Documents/CCData/creditcard.csv'
-    ccData = CCFraudData(loc=loc, target_loc='/Users/anshulverma/Documents/CCData/analysis')
+if __name__ == "__main__":  
+    main_dir = osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__))))
+    os.makedirs(osp.join(main_dir, 'CCData'), exist_ok=True)
+    loc = osp.join(main_dir, 'CCData', 'creditcard.csv')
+    target_loc = osp.join(main_dir, 'CCData', 'analysis')
+    os.makedirs(target_loc, exist_ok=True)
+
+    ccData = CCFraudData(loc=loc, target_loc=target_loc)
 
     print('#'*10 + ' '*5 + 'Preprocessing FRAUD datasets' + ' '*5 + '#'*10)
     ccPreprocess = CCFraudPreprocess(ccData=ccData)

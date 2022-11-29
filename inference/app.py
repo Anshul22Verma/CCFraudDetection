@@ -6,7 +6,8 @@ import pandas as pd
 from pydantic import BaseModel
 import uvicorn
 import sys
-sys.path.append('/Users/anshulverma/Documents/CCFraudDetection')
+
+sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
 
 from exp.model.ml_models import MLClassifierModel
 from utils.utilities import download_from_aws, upload_to_aws, send_email

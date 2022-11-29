@@ -6,7 +6,8 @@ import pandas as pd
 import seaborn as sns 
 import sys
 
-sys.path.append('/Users/anshulverma/Documents/CCFraudDetection')
+sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
+
 from utils.utilities import InvalidInputException
 
 
@@ -134,6 +135,11 @@ class CCFraudData:
 
                
 if __name__ == "__main__":
-    loc = '/Users/anshulverma/Documents/CCData/creditcard.csv'
-    ccData = CCFraudData(loc=loc, target_loc='/Users/anshulverma/Documents/CCData/analysis')
+    main_dir = osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__))))
+    os.makedirs(osp.join(main_dir, 'CCData'), exist_ok=True)
+    loc = osp.join(main_dir, 'CCData', 'creditcard.csv')
+    target_loc = osp.join(main_dir, 'CCData', 'analysis')
+    os.makedirs(target_loc, exist_ok=True)
+
+    ccData = CCFraudData(loc=loc, target_loc=target_loc)
     ccData.analyze()

@@ -2,6 +2,9 @@
 
 Credit Card fraud detection to detect CC fraud via PCA features to hide the details.
 
+## Setup
+Create a `CCData` directory where you clone the repository and put the csv data file inside that folder. All the results are then locally saved in an analysis folder inside the Data folder.
+
 
 ## Dataset
 Using kaggle dataset to build a model which detects fraudulent transaction 
