@@ -35,3 +35,9 @@ VALIDATION SCORE of DT: 0.9326985389968016
 - Train a model and deploy it in the cloud with versioning.
 - Predection requests > 5 sends a notification to the user, with a request to label the new data and check if the model is getting stale.
 
+# Inference
+
+Steps to run the docker for inference
+- Step1: docker build -t sgsdemo .
+- Step2: docker run -p 80:80 --cpus 2 sgsdemo
+
