@@ -1,6 +1,7 @@
 import boto3
 from botocore.exceptions import NoCredentialsError
 import json
+import os.path as osp
 
 class InvalidInputException(Exception):
     pass
@@ -13,7 +14,7 @@ ACCESS_KEY = 'XXXXXXXXXXXXXXXXXXXXXXX'
 SECRET_KEY = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 googleAuth = 'XXXXXXXXXXXXXXXX'
 
-with open('cred.json') as data_file:
+with open(osp.join(osp.dirname(osp.dirname(osp.abspath(__file__))), 'cred.json')) as data_file:
     data = json.load(data_file)
     ACCESS_KEY = data['ACCESS_KEY']
     SECRET_KEY = data['SECRET_KEY']
