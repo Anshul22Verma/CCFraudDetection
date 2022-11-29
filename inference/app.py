@@ -9,7 +9,7 @@ import sys
 
 sys.path.append(osp.dirname(osp.dirname(osp.abspath(__file__))))
 
-from exp.model.ml_models import MLClassifierModel
+from exp.model.ml_models import MLClassifierModel, load_model
 from utils.utilities import download_from_aws, upload_to_aws, send_email
 
 
@@ -21,7 +21,7 @@ tmp_dir = osp.join(curr, 'tmp')
 os.makedirs(tmp_dir, exist_ok=True)
 model = MLClassifierModel((1, 1))
 if download_from_aws('ccfraudbucket', 'raw/model.json', osp.join(tmp_dir, 'model.json')):
-    model.load_model(osp.join(tmp_dir, 'model.json'))
+    model = load_model(osp.join(tmp_dir, 'model.json'))
 else:
     Exception("can't download model")
 
