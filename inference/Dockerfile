@@ -18,9 +18,11 @@ RUN apt-get update && apt-get install -y \
 
 # I prefer having the model and code downloaded in the docker if the model and the code version is not changing
 # but to be able to use CD we should pull the code everytime and download the model
-WORKDIR /git
-RUN git clone https://github.com/Anshul22Verma/CCFraudDetection.git /git/code
 WORKDIR /git/code
+
+COPY / .
+
+ENV PYTHONPATH "${PYTHONPATH}:/git/code"
 
 # upgrade and install the requirements
 RUN pip3 install --no-cache-dir -Ur requirements.txt
