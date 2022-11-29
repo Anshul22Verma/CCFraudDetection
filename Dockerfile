@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
     unzip \
+    python3-pip \
  && rm -rf /var/lib/apt/lists/*
 
 # I prefer having the model and code downloaded in the docker if the model and the code version is not changing
