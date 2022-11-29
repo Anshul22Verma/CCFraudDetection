@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
 # but to be able to use CD we should pull the code everytime and download the model
 WORKDIR /git/code
 
-COPY / .
+COPY . .
 
 ENV PYTHONPATH "${PYTHONPATH}:/git/code"
 
