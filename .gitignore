@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+.vscode/*
 # C extensions
 *.so
 
@@ -73,6 +73,8 @@ docs/_build/
 
 # PyBuilder
 target/
+*tmp/*
+cred.json
 
 # Jupyter Notebook
 .ipynb_checkpoints

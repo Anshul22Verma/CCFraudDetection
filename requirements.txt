@@ -1,0 +1,14 @@
+boto3
+fastapi
+gdown
+gunicorn
+imbalanced-learn
+matplotlib
+missingno
+pandas
+pydantic
+scikit-learn
+scikit-plot
+seaborn
+tqdm
+uvicorn
