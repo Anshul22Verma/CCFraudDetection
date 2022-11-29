@@ -141,5 +141,10 @@ if __name__ == "__main__":
     target_loc = osp.join(main_dir, 'CCData', 'analysis')
     os.makedirs(target_loc, exist_ok=True)
 
+    # download the file if it does not exist
+    if not osp.exists(loc):
+        from utils.utilities import download_from_aws
+        download_from_aws('ccfraudbucket', 'raw/creditcard.csv', loc)
+
     ccData = CCFraudData(loc=loc, target_loc=target_loc)
     ccData.analyze()
