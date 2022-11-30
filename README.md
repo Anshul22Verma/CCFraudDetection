@@ -41,3 +41,12 @@ Steps to run the docker for inference
 - Step1: docker build -t sgsdemo .
 - Step2: docker run -p 80:80 --cpus 2 sgsdemo
 
+## demo.py 
+contains the demo on how to use the endpoint and `payload.json` shows how the payload needs to be
+### sample output
+```
+{"message":"SGS & Co Demo"}
+
+
+{"prediction_class":0}
+```

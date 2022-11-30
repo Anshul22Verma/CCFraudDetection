@@ -32,12 +32,12 @@ if __name__ == "__main__":
     cls_ = MLClassifierModel(train=train, scaler=False)
     cls_.fit()
 
-    save_model(cls_, osp.join(target_loc, 'model.json'))
+    #save_model(cls_, osp.join(target_loc, 'model.json'))
 
     cls_ = load_model(osp.join(target_loc, 'model.json'))
     print(f'Cross Validation training ROC AUC score of the best estimator is {round(cls_.best_model.cross_val_score, 4)}')
     fig = cls_.plot_best_model(X=X_train, y=y_train, title='ROC Curve on training set')
-    fig.savefig(osp.join(target_loc, 'training_ROC.png'))
+    #fig.savefig(osp.join(target_loc, 'training_ROC.png'))
     plt.close(fig)
 
     # testing
@@ -45,6 +45,6 @@ if __name__ == "__main__":
     test_score = cls_.roc_auc_score_(X=X_test, y=y_test)
     print(f'Test ROC AUC score of the best estimator is {round(test_score, 4)}')
     fig = cls_.plot_best_model(X=X_test, y=y_test, title='ROC Curve on test set')
-    fig.savefig(osp.join(target_loc, 'test_ROC.png'))
+    #fig.savefig(osp.join(target_loc, 'test_ROC.png'))
     plt.close(fig)
     

@@ -59,11 +59,9 @@ class FraudRequest(BaseModel):
     Amount: float
 
 
-def get_predictions(request: dict, model: MLClassifierModel):
-    df = pd.DataFrame()
-    df.append(request)
-    result = model.best_model.best_estimator_.predict(df)
-    return {'prediction_class': result}, df
+def get_predictions(df: pd.DataFrame, model: MLClassifierModel):
+    result = int(model.best_model.best_estimator_.predict(df))
+    return {'prediction_class': result}
 
 
 @app.get('/')
@@ -72,27 +70,30 @@ async def home():
 
 @app.post("/prediction")
 async def getsummary(user_request_in: FraudRequest):
-    payload = {'Time': user_request_in.time, 'Amount': user_request_in.amount,
-        'V1': user_request_in.V1, 'V2': user_request_in.V2, 'V3': user_request_in.V3, 'V4': user_request_in.V4,
-        'V5': user_request_in.V4, 'V6': user_request_in.V6, 'V7': user_request_in.V7, 'V8': user_request_in.V8, 
-        'V9': user_request_in.V9, 'V10': user_request_in.V10, 'V11': user_request_in.V11, 'V12': user_request_in.V12,
-        'V13': user_request_in.V13, 'V14': user_request_in.V14, 'V15': user_request_in.V15, 'V16': user_request_in.V16,
-        'V17': user_request_in.V17, 'V18': user_request_in.V18, 'V19': user_request_in.V19, 'V20': user_request_in.V20,
-        'V21': user_request_in.V21, 'V22': user_request_in.V22, 'V23': user_request_in.V23, 'V24': user_request_in.V24,
-        'V25': user_request_in.V25, 'V26': user_request_in.V26, 'V27': user_request_in.V27, 'V28': user_request_in.V28,
+    payload = {
+            'Time': user_request_in.Time, 'Amount': user_request_in.Amount,
+            'V1': user_request_in.V1, 'V2': user_request_in.V2, 'V3': user_request_in.V3, 'V4': user_request_in.V4,
+            'V5': user_request_in.V4, 'V6': user_request_in.V6, 'V7': user_request_in.V7, 'V8': user_request_in.V8, 
+            'V9': user_request_in.V9, 'V10': user_request_in.V10, 'V11': user_request_in.V11, 'V12': user_request_in.V12,
+            'V13': user_request_in.V13, 'V14': user_request_in.V14, 'V15': user_request_in.V15, 'V16': user_request_in.V16,
+            'V17': user_request_in.V17, 'V18': user_request_in.V18, 'V19': user_request_in.V19, 'V20': user_request_in.V20,
+            'V21': user_request_in.V21, 'V22': user_request_in.V22, 'V23': user_request_in.V23, 'V24': user_request_in.V24,
+            'V25': user_request_in.V25, 'V26': user_request_in.V26, 'V27': user_request_in.V27, 'V28': user_request_in.V28,
         }
+    df_new = pd.DataFrame()
+    df_new = df_new.append(payload, ignore_index=True)
     
-    response, df_new = get_predictions(payload, model)
+    response = get_predictions(df_new, model)
     # to ensure the device using which the prediction was made
     if download_from_aws('ccfraudbucket', 'test.csv', osp.join(tmp_dir, 'test.csv')):
         df = pd.read_csv(osp.join(tmp_dir, 'test.csv'))
-        df.concat(df_new)
+        pd.concat([df, df_new])
         if len(df) > 5:
             # send user an email asking to annotate new data and evaluate performance to ensure model is not stale
             send_email()
-        df.to_csv(osp.join(tmp_dir, 'test.csv'))
-        upload_to_aws('ccfraudbucket', 'test.csv', osp.join(tmp_dir, 'test.csv'))
+        df.to_csv(osp.join(tmp_dir, 'test.csv'), index=False)
+        upload_to_aws(osp.join(tmp_dir, 'test.csv'), 'ccfraudbucket', 'test.csv')
     else:
-        df_new.to_csv(osp.join(tmp_dir, 'test.csv'))
-        upload_to_aws('ccfraudbucket', 'test.csv', osp.join(tmp_dir, 'test.csv'))
+        df_new.to_csv(osp.join(tmp_dir, 'test.csv'), index=False)
+        upload_to_aws(osp.join(tmp_dir, 'test.csv'),'ccfraudbucket', 'test.csv')
     return response

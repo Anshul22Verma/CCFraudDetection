@@ -47,11 +47,11 @@ class MLClassifierModel:
         DTC = DecisionTreeClassifier(random_state = 11, max_features = "auto", class_weight = "balanced")
         # different classificartion models to search from
         self.models = {
-                'LR1': LogisticRegression(), 'LR2': LogisticRegression(), 'LR3': LogisticRegression(), 
-                'SGD': SGDClassifier(), 'Ridge': RidgeClassifier(), 'RF': RandomForestClassifier(),
-                'AdaBoost': AdaBoostClassifier(base_estimator=DTC), 'GB': GradientBoostingClassifier(),
-                'ExT': ExtraTreesClassifier(), 'DT': DecisionTreeClassifier()
-            }
+                'LR1': LogisticRegression()}#, 'LR2': LogisticRegression(), 'LR3': LogisticRegression(), 
+                #'SGD': SGDClassifier(), 'Ridge': RidgeClassifier(), 'RF': RandomForestClassifier(),
+                #'AdaBoost': AdaBoostClassifier(base_estimator=DTC), 'GB': GradientBoostingClassifier(),
+                #'ExT': ExtraTreesClassifier(), 'DT': DecisionTreeClassifier()
+            #}
         self.params = {
                 'LR1': {
                     'penalty': ['l2'], 'C': np.linspace(0.1, 100, 10),
@@ -153,6 +153,7 @@ class MLClassifierModel:
         if X is None or y is None or len(X) != len(y):
             Exception('Need both X and y and they must have the same length')
         
+        print(X, X.columns)
         cls = self.best_model.best_estimator_
         return roc_auc_score(y, cls.predict_proba(X)[:, 1])
 
