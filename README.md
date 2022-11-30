@@ -54,4 +54,4 @@ contains the demo on how to use the endpoint and `payload.json` shows how the pa
 # Results
 results are all in `static` folder, test result for the model
 
-[img](static/test_ROC.png)
+![img](static/test_ROC.png)
